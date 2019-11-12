@@ -1,10 +1,8 @@
 const formEl = document.querySelector("form");
 const submitItem = document.querySelector("#submitBtn"); // submit button
 const ulEl = document.getElementById("todo-list"); // the ul for the todolist
-
-//isStrike = true;
-//add node
-
+const clearSelect = document.querySelector("#clearSelected");
+const clearAll = document.querySelector("#clearAll");
 formEl.addEventListener("submit", addItem);
 
 function addItem(e) {
@@ -25,7 +23,6 @@ function addItem(e) {
   // checkBox.setAttribute("type", "checkbox");
   liAdd.appendChild(checkBox);
   checkBox.addEventListener("click", function() {
-    //isStrike = !isStrike;
     if (checkBox.checked == true) {
       liAdd.style.textDecoration = "line-through";
       return;
@@ -40,11 +37,26 @@ function addItem(e) {
   liAdd.appendChild(document.createTextNode(userInput));
   ulEl.appendChild(liAdd);
 
+  formEl.reset(); // resets text-input field
+
   //add button chunk
   // const deleteBtn = document.createElement("button");
   // deleteBtn.textContent = "x";
   liAdd.appendChild(deleteBtn);
   deleteBtn.addEventListener("click", function() {
-    ulEl.removeChild(liAdd);
+    liAdd.remove();
+  });
+
+  //clear selected chunk
+  clearSelect.addEventListener("click", function() {
+    if (checkBox.checked == true) {
+      //ulEl.removeChild(liAdd);
+      liAdd.remove();
+    }
+  });
+
+  //clear all chunk
+  clearAll.addEventListener("click", function() {
+    liAdd.remove();
   });
 }
