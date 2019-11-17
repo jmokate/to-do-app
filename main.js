@@ -48,6 +48,16 @@ function createNewToDo(e) {
   liAdd.appendChild(deleteBtn);
   deleteBtn.addEventListener("click", function() {
     liAdd.remove();
+    removeItem(userInput);
+    function removeItem(deletedItem) {
+      let index = toDoArray.indexOf(deletedItem);
+      toDoArray.splice(index, 1);
+
+      console.log(deletedItem);
+      console.log(index);
+      console.log(toDoArray);
+    }
+    localStorage.setItem("storageKey", JSON.stringify(toDoArray));
   });
 
   //clear selected chunk
@@ -74,11 +84,13 @@ function saveToLocalStorage() {
   localStorage.setItem("storageKey", JSON.stringify(toDoArray));
 }
 
+// retreieve storage on window load
 window.onload = function() {
-  const savedStorage = JSON.parse(localStorage.getItem("storageKey"));
+  const savedStorage = JSON.parse(localStorage.getItem("storageKey")) || [];
 
   savedStorage.forEach(function(item) {
-    let storageArray = savedStorage;
+    let storageArray = [];
+    storageArray.push(savedStorage); ///this was the last thing done - maybe fix?
 
     let storageLiEl = document.createElement("li");
     let storageDeleteBtn = document.createElement("button");
@@ -90,11 +102,20 @@ window.onload = function() {
 
     storageLiEl.appendChild(document.createTextNode(item));
     storageLiEl.appendChild(storageCheckBox);
+    storageCheckBox.addEventListener("click", function() {
+      //debugger;
+      if (storageCheckBox.checked == true) {
+        storageLiEl.style.textDecoration = "line-through";
+        //saveToLocalStorage();
+        return;
+      }
+      liAdd.style.textDecoration = "none";
+      //saveToLocalStorage();
+    });
     storageLiEl.appendChild(storageDeleteBtn);
 
     storageDeleteBtn.addEventListener("click", function() {
       storageLiEl.remove();
-
       removeArrayItem(item);
 
       function removeArrayItem(deletedItem) {
@@ -105,11 +126,36 @@ window.onload = function() {
         //then splice
         let index = storageArray.indexOf(deletedItem);
         storageArray.splice(index, 1);
-        localStorage.setItem("storageKey", JSON.stringify(storageArray));
+        //localStorage.setItem("storageKey", JSON.stringify(storageArray));
         console.log(deletedItem);
         console.log(index);
         console.log(storageArray);
       }
+      localStorage.setItem("storageKey", JSON.stringify(storageArray));
+    });
+    //CLEAR ALL SELECTED FROM LOCAL STORAGE
+    clearSelect.addEventListener("click", function() {
+      //debugger;
+      if (storageCheckBox.checked == true) {
+        storageLiEl.remove();
+        removeArraySelected(item);
+
+        function removeArraySelected(deleteSelected) {
+          let multipleIndex = storageArray.indexOf(deleteSelected);
+          if (deleteSelected !== -1) {
+            storageArray.splice(multipleIndex, 1);
+            localStorage.setItem("storageKey", JSON.stringify(storageArray));
+            console.log(deleteSelected);
+            console.log(multipleIndex);
+            console.log(storageArray);
+          }
+        }
+      }
+    });
+
+    clearAll.addEventListener("click", function() {
+      storageLiEl.remove();
+      localStorage.clear();
     });
   });
 };
