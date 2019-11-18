@@ -1,7 +1,18 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
+
 body {
+  font-family: "Poppins", sans-serif;
   text-align: center;
 }
 
 ul {
   list-style: none;
+}
+
+.checked-list-item {
+  text-decoration: line-through;
+}
+
+.unchecked-list-item {
+  text-decoration: none;
 }
