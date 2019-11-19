@@ -1,6 +1,5 @@
 (function() {
   const formEl = document.querySelector("form");
-  const submitItem = document.querySelector("#submitBtn"); // submit button
   const ulEl = document.querySelector("#todo-list"); // the ul for the todolist
   const clearSelect = document.querySelector("#clearSelected");
   const clearAll = document.querySelector("#clearAll");
@@ -16,10 +15,14 @@
     //function variables
     const userInput = document.querySelector("#text-input").value; // gets user input
     const addToDoItem = document.createElement("li"); // create li
+
     const deleteBtn = document.createElement("button"); // create delete btn
     deleteBtn.textContent = "x"; // delete btn text
+    deleteBtn.className = "delete-btn";
+
     const checkBox = document.createElement("input"); // create checkbox
     checkBox.setAttribute("type", "checkbox"); // checkbox attributes
+    checkBox.className = "check-box";
 
     //add checkbox chunk
     addToDoItem.appendChild(checkBox);
@@ -92,17 +95,18 @@
     savedStorage.forEach(function(item) {
       //storage variables
       const storageLiEl = document.createElement("li");
+      storageLiEl.className = "list-item";
+
       const storageDeleteBtn = document.createElement("button");
       storageDeleteBtn.textContent = "x";
+      storageDeleteBtn.className = "delete-btn";
+
       const storageCheckBox = document.createElement("input");
       storageCheckBox.setAttribute("type", "checkbox");
-
-      //adding list items
-      ulEl.appendChild(storageLiEl);
-      storageLiEl.appendChild(document.createTextNode(item));
-      storageLiEl.appendChild(storageCheckBox);
+      storageCheckBox.className = "check-box";
 
       //storage checkboxes
+      storageLiEl.appendChild(storageCheckBox);
       storageCheckBox.addEventListener("click", function() {
         if (storageCheckBox.checked) {
           storageLiEl.className = "checked-list-item";
@@ -110,6 +114,10 @@
         }
         storageLiEl.className = "unchecked-list-item";
       });
+
+      //adding list items
+      ulEl.appendChild(storageLiEl);
+      storageLiEl.appendChild(document.createTextNode(item));
 
       //storage delete buttons
       storageLiEl.appendChild(storageDeleteBtn);
